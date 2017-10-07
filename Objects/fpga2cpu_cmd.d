@@ -40,5 +40,7 @@
 .\objects\fpga2cpu_cmd.o: .\fwlib\inc\stm32f4xx_dcmi.h
 .\objects\fpga2cpu_cmd.o: .\fwlib\inc\stm32f4xx_fsmc.h
 .\objects\fpga2cpu_cmd.o: .\include\delay.h
+.\objects\fpga2cpu_cmd.o: .\include\..\driver\1-wire_driver\common\one_wire_net.h
 .\objects\fpga2cpu_cmd.o: .\include\../include/bsp_internalFlash.h
 .\objects\fpga2cpu_cmd.o: .\include\../include/fsmc.h
+.\objects\fpga2cpu_cmd.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

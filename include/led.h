@@ -26,13 +26,14 @@
 #define LED_BLUE_OFF GPIO_SetBits(GPIOI,GPIO_Pin_7)
 #define LED_BLUE_ON  GPIO_ResetBits(GPIOI,GPIO_Pin_7)
 
-#define PW_LED1_ON GPIO_SetBits(GPIOF,GPIO_Pin_7)
-#define PW_LED2_ON GPIO_SetBits(GPIOF,GPIO_Pin_8)
-#define GET_PW_LED1_STATUS GPIO_ReadOutputDataBit(GPIOF,GPIO_Pin_7)
-#define GET_PW_LED2_STATUS GPIO_ReadOutputDataBit(GPIOF,GPIO_Pin_8)
+#define PW_GREEN_ON GPIO_ResetBits(GPIOF,GPIO_Pin_7)
+#define PW_ORG_ON GPIO_ResetBits(GPIOF,GPIO_Pin_8)
+#define GET_PW_GREEN_STATUS GPIO_ReadOutputDataBit(GPIOF,GPIO_Pin_7)
+#define GET_PW_ORG_STATUS GPIO_ReadOutputDataBit(GPIOF,GPIO_Pin_8)
+#define PW_ORG_TOGGLE GPIO_ToggleBits(GPIOF,GPIO_Pin_8)
 
-#define PW_LED1_OFF GPIO_ResetBits(GPIOF,GPIO_Pin_7)
-#define PW_LED2_OFF GPIO_ResetBits(GPIOF,GPIO_Pin_8)
+#define PW_GREEN_OFF GPIO_SetBits(GPIOF,GPIO_Pin_7)
+#define PW_ORG_OFF GPIO_SetBits(GPIOF,GPIO_Pin_8)//org
 
 #define BATCHARGE_INPUT  GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11)
 //----------------------- Include files ------------------------//

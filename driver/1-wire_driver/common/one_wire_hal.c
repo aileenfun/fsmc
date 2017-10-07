@@ -43,21 +43,21 @@ void hw_one_wire_init(void)
 {
     GPIO_InitTypeDef  GPIO_InitStructure;
 	
-	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOI, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOI, ENABLE);
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_7 | GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOI, &GPIO_InitStructure);
 	
-	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;
@@ -69,19 +69,27 @@ void ONE_WIRE_PORT_SWITCH_TO_RX(int port)
 	
 	portselect(port);
 	GPIO_InitTypeDef  GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_NOPULL;//GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_Init(GPIOx, &GPIO_InitStructure);
+	
+//		GPIO_InitTypeDef   GPIO_uInitStructure;
+//	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,ENABLE);
+//	GPIO_uInitStructure.GPIO_Pin = GPIO_Pin_8;                            //设置连接按键的IO端口
+//	GPIO_uInitStructure.GPIO_Mode = GPIO_Mode_IN;                          //设置端口为输入模式
+//	GPIO_uInitStructure.GPIO_Speed = GPIO_Speed_100MHz;                    //设置速度为第三级
+//	GPIO_uInitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;                      //设置输入端口不变化 
+//	GPIO_Init(GPIOB, &GPIO_uInitStructure);                                //把设置的参数用到结构体
 	
 }
 void ONE_WIRE_PORT_SWITCH_TO_TX(int port)
 {
 	portselect(port);
 	GPIO_InitTypeDef  GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOx, ENABLE);
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;
@@ -102,7 +110,7 @@ void ONE_WIRE_PORT_SET(int port, int port_value)
 	}
 	
 }
-int ONE_WIRE_PORT_GET(int port, int port_value)
+int ONE_WIRE_PORT_GET(int port)
 {
 	portselect(port);
 	
@@ -128,7 +136,7 @@ int8_t one_wire_reset(uint8_t port, one_wire_data_type *one_wire_data)
         ONE_WIRE_DELAY_US(ONE_WIRE_RESET_LOW_TIME_STANDARD);	//Delay 640us
         ONE_WIRE_PORT_SWITCH_TO_RX(port);
         ONE_WIRE_DELAY_US(ONE_WIRE_PRESENCE_DETECT_SAMPLE_TIME_STANDARD);	//Delay 70us
-        ONE_WIRE_PORT_GET(port, result);   // get presence detect pulse.
+        result=ONE_WIRE_PORT_GET(port);   // get presence detect pulse.
         ONE_WIRE_DELAY_US(ONE_WIRE_RESET_HIGH_TIME_STANDARD);	//Delay 410us
         break;
     case MODE_OVERDRIVE:
@@ -138,7 +146,7 @@ int8_t one_wire_reset(uint8_t port, one_wire_data_type *one_wire_data)
         ONE_WIRE_DELAY_US(ONE_WIRE_RESET_LOW_TIME_OVERDRIVE);	//Delay 70us
         ONE_WIRE_PORT_SWITCH_TO_RX(port);
         ONE_WIRE_DELAY_US(ONE_WIRE_PRESENCE_DETECT_SAMPLE_TIME_OVERDRIVE);	//Delay 8.5us
-        ONE_WIRE_PORT_GET(port, result);   // get presence detect pulse.
+        result=ONE_WIRE_PORT_GET(port);   // get presence detect pulse.
         ONE_WIRE_DELAY_US(ONE_WIRE_RESET_HIGH_TIME_OVERDRIVE);	//Delay 40us
         break;
     default:
@@ -170,30 +178,31 @@ int8_t one_wire_reset(uint8_t port, one_wire_data_type *one_wire_data)
 //
 uint8_t one_wire_write_bit(uint8_t port, one_wire_data_type *one_wire_data, uint8_t sendbit)
 {
+	ONE_WIRE_PORT_SWITCH_TO_TX(port);
     switch (one_wire_data->speed_mode)
     {
     case MODE_STANDARD:
         if (sendbit == 0)
         {
-            ONE_WIRE_PORT_SWITCH_TO_TX(port);
+            
             ONE_WIRE_PORT_SET(port, 0);			// drive bus low.
             ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ZERO_LOW_TIME_STANDARD);		//Delay 60us
-			ONE_WIRE_PORT_SET(port, 1);			// drive bus high.
+						ONE_WIRE_PORT_SET(port, 1);			// drive bus high.
             ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ZERO_LOW_WAIT_TIME_STANDARD);	//Delay 10us
 		}
         else
         {
-            ONE_WIRE_PORT_SWITCH_TO_TX(port);
+            //ONE_WIRE_PORT_SWITCH_TO_TX(port);
             ONE_WIRE_PORT_SET(port, 0);			// drive bus low.
             ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ONE_LOW_TIME_STANDARD);		//Delay 6us
-			ONE_WIRE_PORT_SET(port, 1);			// drive bus high.
+						ONE_WIRE_PORT_SET(port, 1);			// drive bus high.
             ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ONE_LOW_WAIT_TIME_STANDARD);	//Delay 64us
 		}
         break;
     case MODE_OVERDRIVE:
         if (sendbit == 0)
         {
-            ONE_WIRE_PORT_SWITCH_TO_TX(port);
+            //ONE_WIRE_PORT_SWITCH_TO_TX(port);
             ONE_WIRE_PORT_SET(port, 0);            // drive bus low.
             ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ZERO_LOW_TIME_OVERDRIVE);		//Delay 7.5us
 			ONE_WIRE_PORT_SET(port, 1);
@@ -201,7 +210,7 @@ uint8_t one_wire_write_bit(uint8_t port, one_wire_data_type *one_wire_data, uint
         }
         else
         {
-            ONE_WIRE_PORT_SWITCH_TO_TX(port);
+            //ONE_WIRE_PORT_SWITCH_TO_TX(port);
             ONE_WIRE_PORT_SET(port, 0);            // drive bus low.
 			ONE_WIRE_DELAY_US(ONE_WIRE_WRITE_ONE_LOW_TIME_OVERDRIVE);		//Delay 1us
 			ONE_WIRE_PORT_SET(port, 1);
@@ -233,7 +242,8 @@ uint8_t one_wire_read_bit(uint8_t port, one_wire_data_type *one_wire_data)
 		ONE_WIRE_DELAY_US(ONE_WIRE_READ_LOW_TIME_STANDARD);		//Delay 6us		
         ONE_WIRE_PORT_SWITCH_TO_RX(port);
 		ONE_WIRE_DELAY_US(ONE_WIRE_READ_SAMPLE_TIME_STANDARD);	//Delay 9us	
-        ONE_WIRE_PORT_GET(port, result);
+        result=ONE_WIRE_PORT_GET(port);
+		//result=GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_8);
         ONE_WIRE_DELAY_US(ONE_WIRE_READ_WAIT_TIME_STANDARD);	//Delay 55us
         break;
     case MODE_OVERDRIVE:
@@ -242,7 +252,7 @@ uint8_t one_wire_read_bit(uint8_t port, one_wire_data_type *one_wire_data)
 		ONE_WIRE_DELAY_US(ONE_WIRE_READ_LOW_TIME_OVERDRIVE);	//Delay 1us
         ONE_WIRE_PORT_SWITCH_TO_RX(port);
 		ONE_WIRE_DELAY_US(ONE_WIRE_READ_SAMPLE_TIME_OVERDRIVE);	//Delay 1us
-        ONE_WIRE_PORT_GET(port, result);
+        result=ONE_WIRE_PORT_GET(port);
         ONE_WIRE_DELAY_US(ONE_WIRE_READ_WAIT_TIME_OVERDRIVE);	//Delay 7us
         break;
     default:

@@ -60,7 +60,6 @@ static int initialize(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE);
 	GPIO_uInitStructure.GPIO_Pin = GPIO_Pin_11;    
 	GPIO_uInitStructure.GPIO_Mode = GPIO_Mode_IN;  
-	GPIO_uInitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_uInitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_uInitStructure.GPIO_Speed = GPIO_Speed_100MHz; 
 

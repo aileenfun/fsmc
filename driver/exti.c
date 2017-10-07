@@ -49,7 +49,6 @@ static int initialize(void)
 	GPIO_InitTypeDef   GPIO_InitStructure;
 	NVIC_InitTypeDef   NVIC_InitStructure;
 
-	//RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOI,ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH,ENABLE);                    //使能GPIOH时钟
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);                  //使能SYSCFG时钟
 
@@ -57,10 +56,8 @@ static int initialize(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	//GPIO_Init(GPIOI, &GPIO_InitStructure);
 	GPIO_Init(GPIOH, &GPIO_InitStructure);
-
-	//SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOI, EXTI_PinSource0);
+	
 	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOH, EXTI_PinSource5);          //PH5与EXTI15连接
 
 	EXTI_InitStructure.EXTI_Line = EXTI_Line5;                             //设置连接中断线15

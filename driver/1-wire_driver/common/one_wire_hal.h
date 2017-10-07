@@ -37,7 +37,7 @@
 void ONE_WIRE_PORT_SWITCH_TO_RX(int port);
 void ONE_WIRE_PORT_SWITCH_TO_TX(int port);
 void ONE_WIRE_PORT_SET(int port, int port_value);
-int ONE_WIRE_PORT_GET(int port, int port_value);
+int ONE_WIRE_PORT_GET(int port);
 
 
 /*

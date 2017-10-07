@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: ¦ÌVision V5.17.0.0
 Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: liu Microsoft, Microsoft, LIC=X96Z9-41W4G-G7TR6-DKBXZ-UGX9B-VT7E7
+License Information: alan Microsoft, Microsoft, LIC=KRMLQ-NGWKU-DK3BN-YJ8VB-H0EQB-GWNES
  
 Tool Versions:
 Toolchain:       MDK-ARM Standard  Version: 5.17
@@ -28,44 +28,41 @@ Project File Date:  05/13/2017
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 assembling startup_stm32f40_41xxx.s...
-compiling timer3.c...
-driver\timer3.c(85): warning:  #177-D: variable "counter" was declared but never referenced
-  	static int counter = 0;
-driver\timer3.c: 1 warning, 0 errors
-compiling led.c...
-compiling stm32f4xx_it.c...
-compiling system_stm32f4xx.c...
 compiling fsmc.c...
-compiling systick.c...
-compiling one_wire_crc.c...
 compiling main.c...
 main\..\include\bsp_internalFlash.h(50): warning:  #1295-D: Deprecated declaration write_FPGAPCB_VER - give arg types
   int write_FPGAPCB_VER();
-main\..\include\fpga2cpu_cmd.h(57): warning:  #1-D: last line of file ends without a newline
+main\..\include\fpga2cpu_cmd.h(70): warning:  #1295-D: Deprecated declaration updatestatus - give arg types
+  void updatestatus();
+main\..\include\fpga2cpu_cmd.h(71): warning:  #1295-D: Deprecated declaration get_front_prob_num - give arg types
+   int get_front_prob_num();
+main\..\include\fpga2cpu_cmd.h(74): warning:  #1-D: last line of file ends without a newline
   #endif
-main\main.c(168): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  		float VBAT=adc.value[1]*
+main\main.c(167): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		float VBAT=adc.value[0]*
 aramvbat;
 main\main.c(169): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   		if(VCC3_3<
 hres_v3_3)
-main\main.c(217): warning:  #177-D: variable "i" was declared but never referenced
+main\main.c(277): warning:  #223-D: function "task_devicestatus" declared implicitly
+  		task_devicestatus();
+main\main.c(223): warning:  #177-D: variable "i" was declared but never referenced
   	int i;
-main\main.c(218): warning:  #177-D: variable "data" was declared but never referenced
+main\main.c(224): warning:  #177-D: variable "data" was declared but never referenced
   	char data=0;
-main\main.c(219): warning:  #177-D: variable "fsmc_read_data" was declared but never referenced
+main\main.c(225): warning:  #177-D: variable "fsmc_read_data" was declared but never referenced
   	unsigned short int fsmc_read_data;
-main\main.c: 7 warnings, 0 errors
-compiling adc.c...
-compiling exti.c...
-driver\..\include\fpga2cpu_cmd.h(57): warning:  #1-D: last line of file ends without a newline
-  #endif
-driver\exti.c(98): warning:  #177-D: variable "i" was declared but never referenced
-  	int i;
-driver\exti.c(99): warning:  #177-D: variable "work_status" was declared but never referenced
-  	static int work_status = 0;
-driver\exti.c: 3 warnings, 0 errors
-compiling one_wire_hal.c...
+main\main.c(236): warning:  #177-D: variable "temp" was declared but never referenced
+  	char temp[4]={0x30,0x00,0x00,0x00};
+main\main.c: 11 warnings, 0 errors
+compiling led.c...
+compiling stm32f4xx_it.c...
+compiling timer3.c...
+driver\timer3.c(85): warning:  #177-D: variable "counter" was declared but never referenced
+  	static int counter = 0;
+driver\timer3.c: 1 warning, 0 errors
+compiling system_stm32f4xx.c...
+compiling systick.c...
 compiling bsp_internalFlash.c...
 driver\../include/bsp_internalFlash.h(50): warning:  #1295-D: Deprecated declaration write_FPGAPCB_VER - give arg types
   int write_FPGAPCB_VER();
@@ -80,22 +77,45 @@ driver\bsp_internalFlash.c(222): warning:  #177-D: variable "uwEndSector" was de
 driver\bsp_internalFlash.c(225): warning:  #177-D: variable "uwSectorCounter" was declared but never referenced
   	uint32_t uwSectorCounter = 0;
 driver\bsp_internalFlash.c: 6 warnings, 0 errors
-compiling one_wire_rom_func.c...
-compiling delay.c...
+compiling exti.c...
+driver\..\include\fpga2cpu_cmd.h(70): warning:  #1295-D: Deprecated declaration updatestatus - give arg types
+  void updatestatus();
+driver\..\include\fpga2cpu_cmd.h(71): warning:  #1295-D: Deprecated declaration get_front_prob_num - give arg types
+   int get_front_prob_num();
+driver\..\include\fpga2cpu_cmd.h(74): warning:  #1-D: last line of file ends without a newline
+  #endif
+driver\exti.c(95): warning:  #177-D: variable "i" was declared but never referenced
+  	int i;
+driver\exti.c(96): warning:  #177-D: variable "work_status" was declared but never referenced
+  	static int work_status = 0;
+driver\exti.c: 5 warnings, 0 errors
+compiling one_wire_crc.c...
+compiling adc.c...
+compiling one_wire_hal.c...
 compiling one_wire_net.c...
+compiling delay.c...
 compiling fpga2cpu_cmd.c...
-.\include\../include/fpga2cpu_cmd.h(57): warning:  #1-D: last line of file ends without a newline
+.\include\../include/fpga2cpu_cmd.h(70): warning:  #1295-D: Deprecated declaration updatestatus - give arg types
+  void updatestatus();
+.\include\../include/fpga2cpu_cmd.h(71): warning:  #1295-D: Deprecated declaration get_front_prob_num - give arg types
+   int get_front_prob_num();
+.\include\../include/fpga2cpu_cmd.h(74): warning:  #1-D: last line of file ends without a newline
   #endif
 .\include\../include/bsp_internalFlash.h(50): warning:  #1295-D: Deprecated declaration write_FPGAPCB_VER - give arg types
   int write_FPGAPCB_VER();
-fpga2cpu_cmd.c(267): warning:  #1-D: last line of file ends without a newline
+fpga2cpu_cmd.c(247): warning:  #177-D: variable "c_id" was declared but never referenced
+  	char c_id[22*3];
+fpga2cpu_cmd.c(248): warning:  #177-D: variable "prob_id_offset" was declared but never referenced
+  	int prob_id_offset=cmd[0]-GET_F_PROB_ID;
+fpga2cpu_cmd.c(443): warning:  #1-D: last line of file ends without a newline
   }
-fpga2cpu_cmd.c(165): warning:  #177-D: variable "tempdata1" was declared but never referenced
+fpga2cpu_cmd.c(297): warning:  #177-D: variable "tempdata1" was declared but never referenced
   	char tempdata1=0;
-fpga2cpu_cmd.c: 4 warnings, 0 errors
+fpga2cpu_cmd.c: 8 warnings, 0 errors
+compiling one_wire_rom_func.c...
 compiling misc.c...
-compiling stm32f4xx_fsmc.c...
 compiling stm32f4xx_gpio.c...
+compiling stm32f4xx_fsmc.c...
 compiling stm32f4xx_syscfg.c...
 compiling stm32f4xx_rcc.c...
 compiling stm32f4xx_tim.c...
@@ -103,8 +123,8 @@ compiling stm32f4xx_exti.c...
 compiling stm32f4xx_flash.c...
 compiling stm32f4xx_adc.c...
 linking...
-Program Size: Code=10888 RO-data=424 RW-data=404 ZI-data=25476  
-".\Objects\fsmc.axf" - 0 Error(s), 21 Warning(s).
+Program Size: Code=11264 RO-data=424 RW-data=424 ZI-data=25608  
+".\Objects\fsmc.axf" - 0 Error(s), 31 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -122,7 +142,7 @@ Package Vendor: ARM
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:4.3.0
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:06
 </pre>
 </body>
 </html>

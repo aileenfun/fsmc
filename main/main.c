@@ -37,7 +37,7 @@
 #include "..\include\fpga2cpu_cmd.h"
 //------------------------define--------------------------//
 #define Thres_v3_3 2.8
-#define Thres_vbat 10
+#define Thres_vbat 13
 
 //-----------------------variable-------------------------//
 
@@ -164,33 +164,38 @@
 	 for(i = 0;i < 2;i++){
 			adc.read(i);
 		}
-		float VCC3_3=adc.value[0]*paramv3_3;
-		float VBAT=adc.value[1]*paramvbat;
+		float VBAT=adc.value[0]*paramvbat;
+		float VCC3_3=adc.value[1]*paramv3_3;
 		if(VCC3_3<Thres_v3_3)
 		{
 				
 		}
-		if(VBAT<Thres_vbat)
+			if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11))
 		{
-			PW_LED1_OFF;
-			PW_LED2_ON;
-		}
-		else
-		{
-			PW_LED1_ON;
-			PW_LED2_OFF;
-		}
-		if(BATCHARGE_INPUT)
-		{
-			if(GET_PW_LED2_STATUS)
+			
+			PW_ORG_TOGGLE;
+			if(VBAT<Thres_vbat)
 			{
-				PW_LED2_OFF;
+				PW_GREEN_OFF;
 			}
 			else
 			{
-				PW_LED2_ON;
+				PW_GREEN_ON;
 			}
+			}
+		else
+		{
+		if(VBAT<Thres_vbat)
+		{
+			PW_GREEN_OFF;
+			PW_ORG_ON;
 		}
+		else
+		{
+			PW_GREEN_ON;
+			PW_ORG_OFF;
+		}
+	}
  }
  void ad_powerup()
  {
@@ -212,6 +217,7 @@
 	 delayms(10);
 	 //fpga_write(AD_HW_START,1);
  }
+
 int main(void)
 {
 	int i;
@@ -227,39 +233,9 @@ int main(void)
 
 		fpga_write(F_ARMCTRL,0);//get spi control
 
-	//InternalFlash_Test();//good
-	//char flashbuff[20]={0};
+	char temp[4]={0x30,0x00,0x00,0x00};
 	
-	//readflash(flashbuff,20);
-	char adconfig[]={0x95,0xD0,0xE8,0x00,
-		0x50,0x50,0x50,0x50,
-		0x50,0x50,0x50,0x50,
-		0x00,0x00,0x00,0x00,
-	0x00,0x00,0x00,0x00,
-	0x00,0x00,0x00};
-	
-	int len=sizeof(adconfig);
-
-//	for(int i=0;i<8;i++)
-//	{
-//		spiwrite(0x01,adconfig,len);
-//	}
-	for(int i=0;i<len;i++)
-	{
-		spiwrite(0x01+i,adconfig+i,1);
-	}
-	ad_powerup();	
-		for(int i=0;i<len;i++)
-	{
-		spiwrite(0x01+i,adconfig+i,1);
-	}
-	for(int i=0;i<10;i++)
-	{
-		char five=0x50;
-		spiwrite(0x09,&five,1);
-	}
-
-	char temp1=spiread(0x00);
+	//set_f_threshold(temp);
 
 	fpga_write(AD_HW_START,1);
 //	adstart();
@@ -283,19 +259,22 @@ int main(void)
 //	getf210sn(cmd);
 
 ////$$$$$$one wire driver test$$$$$$$
-one_wire_device_num[0] = one_wire_family_search(0, &one_wire_data[0][0], DS2401_FAMILY_CODE, 0);
 
+
+	
 	while(1)
 	{
-		/*
+		
 		one_wire_device_num[0] = one_wire_family_search(0, &one_wire_data[0][0], DS2401_FAMILY_CODE, 0);
+		/*
 		one_wire_device_num[1] = one_wire_family_search(1, &one_wire_data[1][0], DS2401_FAMILY_CODE, 0);
 		one_wire_device_num[2] = one_wire_family_search(2, &one_wire_data[2][0], DS2401_FAMILY_CODE, 0);
 		one_wire_device_num[3] = one_wire_family_search(3, &one_wire_data[3][0], DS2401_FAMILY_CODE, 0);
 		*/
-		//readflash(verinfo,15,0);
-		delay_ms(2000);
+		
+		delay_ms(1000);
 		task_pwtest();
+		task_devicestatus();
 		if(systick.second_flag)
 		{
 			systick.second_flag=0;

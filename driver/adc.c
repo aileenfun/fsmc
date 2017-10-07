@@ -48,11 +48,9 @@ static int initialize(void)
 	ADC_InitTypeDef  ADC_InitStructure;
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE);
-	
+
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);                            //使能ADC1时钟 
 	
-
-	//ADC1_PC4<----->channel 14, ADC1_PC5<----->channel 15
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;                                    //模拟输入
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -74,9 +72,8 @@ static int initialize(void)
 	ADC_Init(ADC1, &ADC_InitStructure);
 	//ADC_Init(ADC3, &ADC_InitStructure);
 	
-	//使能ADC
 	ADC_Cmd(ADC1, ENABLE);
-
+		
 	return 0;
 }
 /*
